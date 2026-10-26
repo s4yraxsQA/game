@@ -3,275 +3,451 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Для Катюши 💖</title>
+    <title>Мини-футбол для двух игроков</title>
     <style>
-        /* Сброс и базовые стили */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
+        
         body {
-            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            background: radial-gradient(circle at 30% 30%, #ffb6c1, #ff69b4, #db7090);
-            font-family: 'Segoe UI', 'Arial', sans-serif;
-            padding: 16px;
-            margin: 0;
-            /* Добавим легкую анимацию фона для живости */
-            animation: softGlow 6s infinite alternate;
+            height: 100vh;
+            background: linear-gradient(135deg, #1a5e1a, #0d3d0d);
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            color: white;
         }
-
-        @keyframes softGlow {
-            0% { filter: brightness(1); }
-            100% { filter: brightness(1.05); }
+        
+        .game-container {
+            position: relative;
+            width: 800px;
+            height: 500px;
+            background: #2a8a2a;
+            border: 5px solid #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
         }
-
-        /* Контейнер для флип-карточки */
-        .flip-container {
-            width: 340px;
-            height: 440px;
-            perspective: 1600px; /* Глубина для 3D-эффекта */
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-
-        /* Внутренний вращающийся блок */
-        .flipper {
+        
+        .field {
             position: relative;
             width: 100%;
             height: 100%;
-            transition: transform 0.8s cubic-bezier(0.4, 0.0, 0.2, 1);
-            transform-style: preserve-3d;
-            border-radius: 40px 40px 40px 40px;
-            box-shadow: 0 20px 40px rgba(199, 21, 133, 0.5), 0 0 0 4px #fff9 inset, 0 0 20px #ffc0cb;
         }
-
-        /* Эффект наведения — переворот */
-        .flip-container:hover .flipper {
-            transform: rotateY(180deg);
-        }
-
-        /* Общие стили для передней и задней стороны */
-        .front, .back {
+        
+        /* Разметка поля */
+        .center-line {
             position: absolute;
-            width: 100%;
-            height: 100%;
-            left: 0;
             top: 0;
-            backface-visibility: hidden; /* Прячем обратную сторону при повороте */
-            border-radius: 40px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 24px;
-            box-sizing: border-box;
-            transition: all 0.3s ease;
+            left: 50%;
+            width: 2px;
+            height: 100%;
+            background: #fff;
+            opacity: 0.7;
         }
-
-        /* Передняя сторона — сердце (розовое великолепие) */
-        .front {
-            background: radial-gradient(circle at 30% 30%, #ffe4ec, #ffb3c6, #ff9eb5);
-            border: 6px solid #ffc0cb;
-            box-shadow: 0 0 30px #ff9eb5, 0 0 60px #ff69b4 inset;
-            transform: rotateY(0deg);
-            /* Анимация пульса для сердца (только в состоянии покоя) */
-            animation: heartbeat 1.8s ease-in-out infinite;
-        }
-
-        /* Само сердце (символ) на передней стороне */
-        .heart {
-            font-size: 140px;
-            line-height: 1;
-            filter: drop-shadow(0 0 20px #ff1493) drop-shadow(0 0 40px #ff69b4);
-            color: #ff3b6f;
-            text-shadow: 4px 4px 0 #fff, 8px 8px 0 rgba(255, 105, 180, 0.5);
-            transform: scale(1);
-            transition: all 0.2s;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        /* Маленький текст под сердцем (опционально, для нежности) */
-        .front p {
-            font-size: 24px;
-            font-weight: bold;
-            color: #b0306e;
-            text-shadow: 2px 2px 0 #ffe4ec;
-            letter-spacing: 2px;
-            margin-top: 16px;
-            background: rgba(255, 240, 245, 0.6);
-            padding: 8px 24px;
-            border-radius: 60px;
-            backdrop-filter: blur(2px);
-            border: 2px solid white;
-        }
-
-        /* Задняя сторона — с текстом */
-        .back {
-            background: linear-gradient(145deg, #ffb7c5, #ff9eb5, #ff85a2);
-            border: 6px solid #fff0f5;
-            box-shadow: 0 0 30px #ffaeb9, 0 0 20px #ffc0cb inset;
-            transform: rotateY(180deg);
-            color: #4a0e2e;
-            text-align: center;
-            font-weight: bold;
-            line-height: 1.5;
-            word-break: break-word;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 16px;
-        }
-
-        /* Основной текст на обороте */
-        .love-message {
-            font-size: 34px;
-            font-weight: 900;
-            color: #ffffff;
-            text-shadow: 3px 3px 0 #d43f6b, 6px 6px 0 rgba(255, 20, 147, 0.6);
-            background: rgba(255, 192, 203, 0.3);
-            padding: 20px 16px;
-            border-radius: 50px;
-            backdrop-filter: blur(4px);
-            border: 4px solid white;
-            box-shadow: 0 10px 20px rgba(199, 21, 133, 0.4);
-            letter-spacing: 2px;
-            transform: rotate(1deg);
-            transition: 0.3s;
-        }
-
-        /* Дополнительный текст помельче */
-        .sub-message {
-            font-size: 28px;
-            color: #fff9;
-            text-shadow: 2px 2px 0 #b0306e;
-            background: rgba(255, 130, 171, 0.8);
-            padding: 12px 28px;
-            border-radius: 40px;
-            border: 2px dashed white;
-            box-shadow: 0 0 20px hotpink;
-            transform: rotate(-1deg);
-        }
-
-        /* Эффект наведения на весь контейнер — дополнительное свечение */
-        .flip-container:hover .front {
-            animation: none; /* убираем пульсацию сердца при перевороте */
-            box-shadow: 0 0 60px #ff69b4, 0 0 90px #ffb6c1;
-        }
-
-        .flip-container:hover .back {
-            box-shadow: 0 0 60px #ff1493, 0 0 90px #ffc0cb;
-        }
-
-        /* Анимация пульса сердца (только передняя сторона) */
-        @keyframes heartbeat {
-            0% { transform: scale(1); }
-            25% { transform: scale(1.02); }
-            35% { transform: scale(1.05); }
-            45% { transform: scale(1.02); }
-            55% { transform: scale(1); }
-            100% { transform: scale(1); }
-        }
-
-        /* Анимация плавного покачивания сердца */
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-8px); }
-            100% { transform: translateY(0px); }
-        }
-
-        /* Дополнительный декор: маленькие сердечки вокруг */
-        .flip-container::before,
-        .flip-container::after {
-            content: "💗";
+        
+        .center-circle {
             position: absolute;
-            font-size: 32px;
-            opacity: 0.6;
-            pointer-events: none;
-            z-index: -1;
-            animation: sparkle 3s infinite alternate;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100px;
+            height: 100px;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            opacity: 0.7;
         }
-
-        .flip-container::before {
-            top: -30px;
-            left: -30px;
-            font-size: 48px;
-            transform: rotate(-15deg);
-            filter: drop-shadow(0 0 8px hotpink);
+        
+        .center-spot {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 10px;
+            height: 10px;
+            background: #fff;
+            border-radius: 50%;
         }
-
-        .flip-container::after {
-            bottom: -30px;
-            right: -30px;
-            font-size: 56px;
-            transform: rotate(20deg);
-            filter: drop-shadow(0 0 12px deeppink);
-            animation-delay: 1s;
+        
+        .goal-left, .goal-right {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 10px;
+            height: 100px;
+            background: #fff;
         }
-
-        @keyframes sparkle {
-            0% { opacity: 0.3; transform: scale(0.8) rotate(-5deg); }
-            100% { opacity: 1; transform: scale(1.2) rotate(5deg); }
+        
+        .goal-left {
+            left: 0;
         }
-
-        /* Адаптация под мобильные */
-        @media (max-width: 450px) {
-            .flip-container {
-                width: 280px;
-                height: 380px;
-            }
-            .heart {
-                font-size: 100px;
-            }
-            .love-message {
-                font-size: 26px;
-            }
-            .sub-message {
-                font-size: 22px;
-            }
+        
+        .goal-right {
+            right: 0;
+        }
+        
+        .goal-area-left, .goal-area-right {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 150px;
+            border: 2px solid #fff;
+            opacity: 0.7;
+        }
+        
+        .goal-area-left {
+            left: 0;
+            border-right: none;
+        }
+        
+        .goal-area-right {
+            right: 0;
+            border-left: none;
+        }
+        
+        /* Игроки и мяч */
+        .player {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            transition: transform 0.1s;
+            z-index: 10;
+        }
+        
+        .player-1 {
+            background: #ff5252;
+            box-shadow: 0 0 10px rgba(255, 82, 82, 0.7);
+            left: 100px;
+            top: 50%;
+        }
+        
+        .player-2 {
+            background: #2196f3;
+            box-shadow: 0 0 10px rgba(33, 150, 243, 0.7);
+            right: 100px;
+            top: 50%;
+        }
+        
+        .ball {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #fff;
+            border-radius: 50%;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+            z-index: 5;
+        }
+        
+        /* Счет */
+        .score {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 28px;
+            color: #fff;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.3);
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+        
+        /* Управление */
+        .controls {
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            color: #fff;
+            font-size: 14px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        
+        .controls div {
+            text-align: center;
+            padding: 5px 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 5px;
+        }
+        
+        /* Анимация гола */
+        @keyframes goalAnimation {
+            0% { background-color: #2a8a2a; }
+            50% { background-color: #ffeb3b; }
+            100% { background-color: #2a8a2a; }
+        }
+        
+        .goal-scored {
+            animation: goalAnimation 0.5s ease 3;
+        }
+        
+        /* Сообщение о голе */
+        .goal-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 40px;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.7);
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 20;
+        }
+        
+        .show-message {
+            opacity: 1;
+        }
+        
+        /* Инструкция */
+        .instructions {
+            position: absolute;
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 10px;
+            max-width: 90%;
         }
     </style>
 </head>
 <body>
-    <div class="flip-container">
-        <div class="flipper">
-            <!-- Лицевая сторона: сердце -->
-            <div class="front">
-                <div class="heart">❤️</div>
-                <p>моё сердце</p>
-                <!-- Небольшой розовый стикер, чтобы было ещё милее -->
-                <span style="position: absolute; bottom: 20px; right: 20px; font-size: 24px; opacity: 0.7;">💖</span>
+    <div class="game-container">
+        <div class="field">
+            <div class="center-line"></div>
+            <div class="center-circle"></div>
+            <div class="center-spot"></div>
+            <div class="goal-left"></div>
+            <div class="goal-right"></div>
+            <div class="goal-area-left"></div>
+            <div class="goal-area-right"></div>
+            
+            <div class="player player-1"></div>
+            <div class="player player-2"></div>
+            <div class="ball"></div>
+            
+            <div class="score">0 : 0</div>
+            <div class="goal-message">ГОЛ!</div>
+            
+            <div class="controls">
+                <div>Игрок 1 (красный): WASD</div>
+                <div>Игрок 2 (синий): Стрелки</div>
             </div>
-            <!-- Задняя сторона: главные слова -->
-            <div class="back">
-                <div class="love-message">
-                    КАТЮША<br>ЛЮБИМАЯ
-                </div>
-                <div class="sub-message">
-                    люблу 💗 целую<br>лабуба 🌸
-                </div>
-                <span style="margin-top: 12px; font-size: 30px; filter: drop-shadow(0 0 10px white);">💞</span>
-                <!-- Мелкие сердечки для атмосферы -->
-                <div style="position: absolute; bottom: 15px; left: 15px; font-size: 24px; opacity: 0.5;">🥰</div>
+            
+            <div class="instructions">
+                Забейте мяч в ворота противника! Игроки могут перемещаться по всему полю.
             </div>
         </div>
     </div>
-    <!-- Дополнительная анимация появления при загрузке (опционально) -->
+
     <script>
-        // Просто добавим лёгкую магию: при загрузке страницы сердечко "здоровается"
-        window.onload = function() {
-            const heart = document.querySelector('.heart');
-            if(heart) {
-                heart.style.transition = 'transform 0.5s';
-                heart.style.transform = 'scale(1.2)';
-                setTimeout(() => { heart.style.transform = 'scale(1)'; }, 300);
+        document.addEventListener('DOMContentLoaded', function() {
+            const player1 = document.querySelector('.player-1');
+            const player2 = document.querySelector('.player-2');
+            const ball = document.querySelector('.ball');
+            const scoreDisplay = document.querySelector('.score');
+            const field = document.querySelector('.field');
+            const goalMessage = document.querySelector('.goal-message');
+            
+            // Начальные позиции
+            let player1Pos = { x: 100, y: 250 };
+            let player2Pos = { x: 700, y: 250 };
+            let ballPos = { x: 400, y: 250 };
+            let ballVelocity = { x: 0, y: 0 };
+            
+            // Счет
+            let score = { player1: 0, player2: 0 };
+            
+            // Клавиши
+            const keys = {
+                w: false, a: false, s: false, d: false,
+                arrowUp: false, arrowLeft: false, arrowDown: false, arrowRight: false
+            };
+            
+            // Скорость игроков
+            const playerSpeed = 5;
+            
+            // Обновление позиций
+            function updatePositions() {
+                // Движение игрока 1 - может перемещаться по всему полю
+                if (keys.w && player1Pos.y > 15) player1Pos.y -= playerSpeed;
+                if (keys.s && player1Pos.y < 485) player1Pos.y += playerSpeed;
+                if (keys.a && player1Pos.x > 15) player1Pos.x -= playerSpeed;
+                if (keys.d && player1Pos.x < 785) player1Pos.x += playerSpeed;
+                
+                // Движение игрока 2 - может перемещаться по всему полю
+                if (keys.arrowUp && player2Pos.y > 15) player2Pos.y -= playerSpeed;
+                if (keys.arrowDown && player2Pos.y < 485) player2Pos.y += playerSpeed;
+                if (keys.arrowLeft && player2Pos.x > 15) player2Pos.x -= playerSpeed;
+                if (keys.arrowRight && player2Pos.x < 785) player2Pos.x += playerSpeed;
+                
+                // Применение позиций
+                player1.style.left = player1Pos.x + 'px';
+                player1.style.top = player1Pos.y + 'px';
+                
+                player2.style.left = player2Pos.x + 'px';
+                player2.style.top = player2Pos.y + 'px';
+                
+                // Движение мяча
+                ballPos.x += ballVelocity.x;
+                ballPos.y += ballVelocity.y;
+                
+                // Замедление мяча
+                ballVelocity.x *= 0.98;
+                ballVelocity.y *= 0.98;
+                
+                // Отскок от границ поля (стен)
+                if (ballPos.x <= 10) {
+                    ballPos.x = 10;
+                    ballVelocity.x = -ballVelocity.x * 0.8;
+                } else if (ballPos.x >= 790) {
+                    ballPos.x = 790;
+                    ballVelocity.x = -ballVelocity.x * 0.8;
+                }
+                
+                if (ballPos.y <= 10) {
+                    ballPos.y = 10;
+                    ballVelocity.y = -ballVelocity.y * 0.8;
+                } else if (ballPos.y >= 490) {
+                    ballPos.y = 490;
+                    ballVelocity.y = -ballVelocity.y * 0.8;
+                }
+                
+                // Проверка на гол
+                if (ballPos.x <= 10 && ballPos.y >= 200 && ballPos.y <= 300) {
+                    // Гол в левые ворота
+                    score.player2++;
+                    showGoalMessage("ГОЛ СИНИХ!");
+                    resetAfterGoal();
+                } else if (ballPos.x >= 790 && ballPos.y >= 200 && ballPos.y <= 300) {
+                    // Гол в правые ворота
+                    score.player1++;
+                    showGoalMessage("ГОЛ КРАСНЫХ!");
+                    resetAfterGoal();
+                }
+                
+                // Применение позиции мяча
+                ball.style.left = ballPos.x + 'px';
+                ball.style.top = ballPos.y + 'px';
+                
+                // Проверка столкновений с игроками
+                checkCollision(player1Pos, 15, 1);
+                checkCollision(player2Pos, 15, 2);
+                
+                // Обновление счета
+                scoreDisplay.textContent = `${score.player1} : ${score.player2}`;
             }
-        }
+            
+            // Показать сообщение о голе
+            function showGoalMessage(message) {
+                goalMessage.textContent = message;
+                goalMessage.classList.add('show-message');
+                setTimeout(() => {
+                    goalMessage.classList.remove('show-message');
+                }, 2000);
+            }
+            
+            // Проверка столкновения с мячом
+            function checkCollision(playerPos, playerRadius, playerNumber) {
+                const dx = ballPos.x - playerPos.x;
+                const dy = ballPos.y - playerPos.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                
+                if (distance < playerRadius + 10) {
+                    // Угол отскока
+                    const angle = Math.atan2(dy, dx);
+                    
+                    // Сила удара зависит от скорости игрока
+                    const power = 7;
+                    
+                    ballVelocity.x = Math.cos(angle) * power;
+                    ballVelocity.y = Math.sin(angle) * power;
+                    
+                    // Слегка сдвигаем мяч, чтобы избежать залипания
+                    ballPos.x += Math.cos(angle) * 5;
+                    ballPos.y += Math.sin(angle) * 5;
+                    
+                    // Добавляем небольшой эффект при ударе
+                    if (playerNumber === 1) {
+                        player1.style.transform = 'scale(1.2)';
+                        setTimeout(() => {
+                            player1.style.transform = 'scale(1)';
+                        }, 100);
+                    } else {
+                        player2.style.transform = 'scale(1.2)';
+                        setTimeout(() => {
+                            player2.style.transform = 'scale(1)';
+                        }, 100);
+                    }
+                }
+            }
+            
+            // Сброс после гола
+            function resetAfterGoal() {
+                // Анимация гола
+                field.classList.add('goal-scored');
+                setTimeout(() => {
+                    field.classList.remove('goal-scored');
+                }, 1500);
+                
+                // Сброс позиций
+                player1Pos = { x: 200, y: 250 };
+                player2Pos = { x: 600, y: 250 };
+                ballPos = { x: 400, y: 250 };
+                ballVelocity = { x: 0, y: 0 };
+            }
+            
+            // Обработчики клавиш
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'w' || e.key === 'W') keys.w = true;
+                if (e.key === 'a' || e.key === 'A') keys.a = true;
+                if (e.key === 's' || e.key === 'S') keys.s = true;
+                if (e.key === 'd' || e.key === 'D') keys.d = true;
+                if (e.key === 'ArrowUp') keys.arrowUp = true;
+                if (e.key === 'ArrowLeft') keys.arrowLeft = true;
+                if (e.key === 'ArrowDown') keys.arrowDown = true;
+                if (e.key === 'ArrowRight') keys.arrowRight = true;
+                
+                // Предотвращаем прокрутку страницы при использовании стрелок
+                if(['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+                    e.preventDefault();
+                }
+            });
+            
+            document.addEventListener('keyup', function(e) {
+                if (e.key === 'w' || e.key === 'W') keys.w = false;
+                if (e.key === 'a' || e.key === 'A') keys.a = false;
+                if (e.key === 's' || e.key === 'S') keys.s = false;
+                if (e.key === 'd' || e.key === 'D') keys.d = false;
+                if (e.key === 'ArrowUp') keys.arrowUp = false;
+                if (e.key === 'ArrowLeft') keys.arrowLeft = false;
+                if (e.key === 'ArrowDown') keys.arrowDown = false;
+                if (e.key === 'ArrowRight') keys.arrowRight = false;
+            });
+            
+            // Игровой цикл
+            function gameLoop() {
+                updatePositions();
+                requestAnimationFrame(gameLoop);
+            }
+            
+            // Запуск игры
+            gameLoop();
+        });
     </script>
 </body>
 </html>
